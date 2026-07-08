@@ -3,6 +3,8 @@
 **A mono-focused lead & bass synthesizer.**
 Plugin developer: **starfinesse** · Built by **34T** for starfinesse.
 
+![PRISM synthesizer UI](docs/prism.png)
+
 One beam in, a full spectrum out. PRISM is a colourful, knob-heavy virtual
 analogue synth built for fat monophonic leads and basses — every parameter is a
 custom-drawn glowing rotary, colour-coded by section, with live displays for the
