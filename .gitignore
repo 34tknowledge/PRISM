@@ -1,0 +1,23 @@
+# build output
+/build/
+build*/
+*.exe
+*.dll
+*.vst3
+*.component
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+_deps/
+
+# IDE
+.vs/
+.idea/
+.vscode/
+*.user
+
+# OS
+Thumbs.db
+.DS_Store
