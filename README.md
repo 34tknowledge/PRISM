@@ -5,6 +5,8 @@ Plugin developer: **starfinesse** · Built by **34T** for starfinesse.
 
 ![PRISM synthesizer UI](docs/prism.png)
 
+**▶ Windows — grab the ready plugin:** [Download PRISM v1.0.0](https://github.com/34tknowledge/PRISM/releases/latest) — unzip and drop `PRISM.vst3` into your VST3 folder, no build needed. macOS / from source: see [Building](#building) below.
+
 One beam in, a full spectrum out. PRISM is a colourful, knob-heavy virtual
 analogue synth built for fat monophonic leads and basses — every parameter is a
 custom-drawn glowing rotary, colour-coded by section, with live displays for the
