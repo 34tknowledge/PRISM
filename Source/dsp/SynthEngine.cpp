@@ -11,8 +11,6 @@ namespace prism
         for (auto& v : voices) v.setSampleRate (sr);
         for (auto& l : lfo)    l.setSampleRate (sr);
 
-        novaAttCoeff = 1.0f - std::exp (-1.0f / (0.08f * (float) sr));   // ~80 ms rise
-        novaRelCoeff = 1.0f - std::exp (-1.0f / (1.20f * (float) sr));   // ~1.2 s fall
         reset();
     }
 
@@ -21,7 +19,6 @@ namespace prism
         for (auto& v : voices) v.reset();
         for (auto& l : lfo)    l.reset();
         held.clear();
-        nova = 0.0f;
         bendSemis = 0.0f;
         startCounter = 0;
     }
@@ -176,13 +173,9 @@ namespace prism
                 ++midiIt;
             }
 
-            // --- supernova envelope ---
-            const float novaTarget = novaOn ? 1.0f : 0.0f;
-            nova += (novaTarget - nova) * (novaTarget > nova ? novaAttCoeff : novaRelCoeff);
-
             // --- global modulation from the two LFOs ---
             ModContext mod;
-            mod.pitchModSemis = bendSemis + nova * -12.0f;   // supernova pitch collapse
+            mod.pitchModSemis = bendSemis;
             float ampMod = 1.0f;
             float panMod = 0.0f;
 

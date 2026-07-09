@@ -1,16 +1,16 @@
 # PRISM
 
-**A mono-focused lead & bass synthesizer.**
+**A mono-focused lead & bass synthesizer.** UI branded **STAR FX**.
 Plugin developer: **starfinesse** · Built by **34T** for starfinesse.
 
-![PRISM synthesizer UI](docs/prism.png)
+![STAR FX synthesizer UI](docs/prism.png)
 
-**▶ Windows — grab the ready plugin:** [Download PRISM v1.0.0](https://github.com/34tknowledge/PRISM/releases/latest) — unzip and drop `PRISM.vst3` into your VST3 folder, no build needed. macOS / from source: see [Building](#building) below.
+**▶ Windows — grab the ready plugin:** [Download the latest release](https://github.com/34tknowledge/PRISM/releases/latest) — unzip and drop `PRISM.vst3` into your VST3 folder, no build needed. macOS / from source: see [Building](#building) below.
 
-One beam in, a full spectrum out. PRISM is a colourful, knob-heavy virtual
-analogue synth built for fat monophonic leads and basses — every parameter is a
-custom-drawn glowing rotary, colour-coded by section, with live displays for the
-oscillator waveforms, filter response and envelope shapes.
+A clean, minimal virtual-analogue synth built for fat monophonic leads and
+basses — a dark, low-glare interface with a single pink accent, flat rotary
+knobs, and live displays for the oscillator waveforms, filter response and
+envelope shapes.
 
 Formats: **VST3**, **Standalone** (and **AU** when built on macOS).
 
@@ -35,36 +35,20 @@ Formats: **VST3**, **Standalone** (and **AU** when built on macOS).
 
 Colored Crusher → Chorus → Delay → Reverb.
 
-- **Colored Crusher** — the signature character effect. Not a generic clipper: a
-  lo-fi AD/DA path modelled after the Decimort/Krush lineage — bit-depth reduction
-  with grid-bias + error-feedback noise-shaping, fractional sample-rate reduction
+- **Colored Crusher** — a character effect, not a generic clipper: a lo-fi AD/DA
+  path modelled after the Decimort/Krush lineage — bit-depth reduction with
+  grid-bias + error-feedback noise-shaping, fractional sample-rate reduction
   (sample & hold), an asymmetric waveshaper for even-harmonic warmth (with DC
   blocker), and a **resonant tone filter** that tames the aliasing and voices the
   grit.
 - **Chorus**, tempo-syncable **Delay** (feedback, ping-pong, tone damping) and a
   lush **Reverb**.
 
-## ⭐ SUPERNOVA
+## Factory presets (60)
 
-The big glowing button. Momentary — engaged while held. It collapses the whole
-synth into a star going supernova: a downward pitch dive, the colored crusher
-slammed to maximum, a feedback delay spun toward runaway shimmer, and the reverb
-blooming wide open. Release it and the tail blooms out into space. It reuses the
-engine's own effects driven by a dedicated envelope, so it always sits in key with
-whatever you're playing. Instant drop / riser for leads and basses.
-
-## Factory presets (16)
-
-| Leads | Basses | Keys / Plucks | Pads |
-|---|---|---|---|
-| Solar Flare Lead | Reese Monster | Crystal Pluck | Aurora Pad |
-| Screamer | Sub Killer | Prism Keys | Warm Analog Pad |
-| Glass Slide | Acid 303 | Pluck House | Space Drone |
-| 8-Bit Hero | Growl Bass | | |
-| Neon Vintage | Grime Wobble | | |
-
-Every preset has real, hand-tuned parameter values. They also show up in your
-DAW's program/preset browser.
+**60** hand-tuned presets across **Leads · Basses · Keys/Plucks · Pads**, grouped
+into per-category submenus in the preset browser and also exposed as programs in
+your DAW's own preset list. Every preset has real, distinct parameter values.
 
 ---
 
@@ -86,15 +70,16 @@ cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 ```
 
-JUCE 8 is fetched automatically by CMake — nothing to install by hand.
+JUCE 8 is fetched automatically by CMake — nothing to install by hand. On macOS
+the build additionally produces the **AU**.
 
-The built VST3 is copied to your user VST3 folder automatically
-(`COPY_PLUGIN_AFTER_BUILD`), and also lands in
-`build/Prism_artefacts/Release/VST3/`.
+The artefacts land in `build/Prism_artefacts/Release/` (`VST3/PRISM.vst3` and
+`Standalone/PRISM.exe`). Copy the `.vst3` into your plugin folder
+(`C:\Program Files\Common Files\VST3` on Windows,
+`~/Library/Audio/Plug-Ins/VST3` on macOS) and rescan.
 
-## Licensing note
+## Notes
 
-This builds against **JUCE 8** under the free **Starter** tier, so the
-"Made with JUCE" splash stays on (`JUCE_DISPLAY_SPLASH_SCREEN=1`). Turning it off
-requires a paid JUCE Indie/Pro seat or shipping under GPLv3 — don't flip it
-without one.
+- Verified against **pluginval** at strictness 8 (clean).
+- The repo contains only original code; JUCE is fetched at build time, so JUCE's
+  own licence applies to the framework when you build/ship.

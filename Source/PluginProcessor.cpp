@@ -88,9 +88,6 @@ void PrismAudioProcessor::updateParametersForBlock()
     engine.setLfoParams (1, (int) paramValue (lfo2Wave),
                          lfoHz (paramValue (lfo2Sync) > 0.5f, paramValue (lfo2Rate), (int) paramValue (lfo2SyncRate)),
                          (int) paramValue (lfo2Dest), paramValue (lfo2Amount));
-
-    // ---- supernova ----
-    engine.setSupernova (paramValue (supernova) > 0.5f);
 }
 
 void PrismAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midi)
@@ -142,7 +139,7 @@ void PrismAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     fp.reverbWidth = paramValue (reverbWidth);
     fp.reverbMix = paramValue (reverbMix);
 
-    fp.nova = engine.getSupernovaValue();
+    fp.nova = 0.0f;
     fx.process (buffer, fp);
 
     // 3. master output gain

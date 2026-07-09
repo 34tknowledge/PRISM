@@ -21,3 +21,6 @@ _deps/
 # OS
 Thumbs.db
 .DS_Store
+
+# raw source logo (the processed one lives in Resources/)
+/sf_logo.png

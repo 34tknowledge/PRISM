@@ -1,6 +1,7 @@
 #include "PluginEditor.h"
 #include "params/Parameters.h"
 #include "params/Presets.h"
+#include "BinaryData.h"
 
 using namespace prism;
 using namespace prism::id;
@@ -26,9 +27,8 @@ PrismAudioProcessorEditor::PrismAudioProcessorEditor (PrismAudioProcessor& p)
     presetNext.onClick = [this] { selectProgram (proc.getCurrentProgram() + 1); };
     presetName.onClick = [this] { showPresetMenu(); };
 
-    // hero
-    nova.setParameter (proc.getAPVTS().getParameter (supernova));
-    addAndMakeVisible (nova);
+    // logo (embedded PNG, black keyed to transparency)
+    logoImage = juce::ImageCache::getFromMemory (BinaryData::sf_logo_png, BinaryData::sf_logo_pngSize);
 
     // top-bar controls
     voiceModeCombo = makeCombo (voiceMode, theme::master);  addAndMakeVisible (*voiceModeCombo);
@@ -240,17 +240,21 @@ void PrismAudioProcessorEditor::refreshPresetName()
 
 void PrismAudioProcessorEditor::showPresetMenu()
 {
-    juce::PopupMenu menu;
     const auto& presets = getFactoryPresets();
-    juce::String category;
-    for (int i = 0; i < (int) presets.size(); ++i)
+    const juce::StringArray categories { "Lead", "Bass", "Keys", "Pluck", "Pad" };
+
+    juce::PopupMenu menu;
+    for (const auto& cat : categories)
     {
-        if (presets[(size_t) i].category != category)
-        {
-            category = presets[(size_t) i].category;
-            menu.addSectionHeader (category);
-        }
-        menu.addItem (i + 1, presets[(size_t) i].name, true, i == proc.getCurrentProgram());
+        juce::PopupMenu sub;
+        bool any = false;
+        for (int i = 0; i < (int) presets.size(); ++i)
+            if (presets[(size_t) i].category == cat)
+            {
+                sub.addItem (i + 1, presets[(size_t) i].name, true, i == proc.getCurrentProgram());
+                any = true;
+            }
+        if (any) menu.addSubMenu (cat, sub);
     }
     menu.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (presetName),
                         [this] (int result) { if (result > 0) selectProgram (result - 1); });
@@ -266,8 +270,6 @@ void PrismAudioProcessorEditor::timerCallback()
                            pv (id::filterReso), pv (id::filterSlope) > 0.5f);
     ampEnvDisp.setADSR (pv (id::ampAttack), pv (id::ampDecay), pv (id::ampSustain), pv (id::ampRelease));
     filtEnvDisp.setADSR (pv (id::filtAttack), pv (id::filtDecay), pv (id::filtSustain), pv (id::filtRelease));
-
-    nova.setGlow (proc.getEngine().getSupernovaValue());
 
     if (proc.getCurrentProgram() != lastProgram)
         refreshPresetName();
@@ -287,26 +289,16 @@ void PrismAudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour (theme::stroke);
     g.drawRoundedRectangle (bar.reduced (0.5f), 8.0f, 1.0f);
 
-    // prism icon (triangle splitting a beam)
-    const float iy = 36.0f;
-    juce::Path tri;
-    tri.addTriangle (22.0f, 50.0f, 40.0f, 20.0f, 58.0f, 50.0f);
-    juce::ColourGradient tg (theme::filter, 22.0f, 50.0f, theme::fx, 58.0f, 20.0f, false);
-    g.setGradientFill (tg);
-    g.strokePath (tri, juce::PathStrokeType (2.0f));
-    g.setColour (juce::Colours::white.withAlpha (0.8f));
-    g.drawLine (10.0f, iy, 22.0f, iy, 1.5f);                         // incoming beam
-    g.setColour (theme::filter); g.drawLine (44.0f, iy + 2.0f, 74.0f, 26.0f, 1.2f);
-    g.setColour (theme::ampEnv); g.drawLine (44.0f, iy + 4.0f, 74.0f, 34.0f, 1.2f);
-    g.setColour (theme::fx);     g.drawLine (44.0f, iy + 6.0f, 74.0f, 42.0f, 1.2f);
+    // logo + wordmark
+    if (logoImage.isValid())
+        g.drawImage (logoImage, juce::Rectangle<float> (14.0f, 9.0f, 50.0f, 50.0f),
+                     juce::RectanglePlacement::centred);
 
-    // wordmark
     g.setColour (theme::text);
-    g.setFont (juce::Font (juce::FontOptions().withHeight (28.0f).withStyle ("Bold")));
-    g.drawText ("PRISM", 84, 12, 150, 30, juce::Justification::centredLeft);
-    g.setColour (theme::textDim);
-    g.setFont (juce::Font (juce::FontOptions().withHeight (11.0f)));
-    g.drawText ("STARFINESSE", 86, 40, 150, 14, juce::Justification::centredLeft);
+    g.setFont (juce::Font (juce::FontOptions().withHeight (25.0f).withStyle ("Bold")));
+    g.drawText ("STAR", 74, 14, 90, 34, juce::Justification::centredLeft);
+    g.setColour (theme::accent);
+    g.drawText ("FX", 138, 14, 80, 34, juce::Justification::centredLeft);
 }
 
 void PrismAudioProcessorEditor::resized()
@@ -326,10 +318,8 @@ void PrismAudioProcessorEditor::resized()
         presetNext.setBounds (preset.removeFromRight (30).reduced (2));
         presetName.setBounds (preset.reduced (4, 2));
 
-        // right cluster: supernova + master/glide/bend + mode combos
+        // right cluster: master/glide/bend + mode combos
         auto right = b;
-        nova.setBounds (right.removeFromRight (120));
-        right.removeFromRight (gap);
         masterKnob->setBounds (right.removeFromRight (62));
         glideKnob->setBounds  (right.removeFromRight (58));
         bendKnob->setBounds   (right.removeFromRight (54));

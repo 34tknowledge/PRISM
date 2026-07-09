@@ -6,24 +6,20 @@
 
 namespace prism
 {
-    /** Shared dark rounded panel used behind every live display. */
-    inline void paintDisplayBackground (juce::Graphics& g, juce::Rectangle<float> b, juce::Colour accent)
+    /** Shared inset panel used behind every live display (clean, flat). */
+    inline void paintDisplayBackground (juce::Graphics& g, juce::Rectangle<float> b, juce::Colour)
     {
         g.setColour (theme::bg0);
         g.fillRoundedRectangle (b, 6.0f);
-        g.setColour (accent.withAlpha (0.25f));
+        g.setColour (theme::stroke);
         g.drawRoundedRectangle (b.reduced (0.5f), 6.0f, 1.0f);
     }
 
+    /** Single clean stroke (no glow layers). */
     inline void glowStroke (juce::Graphics& g, const juce::Path& p, juce::Colour c, float base)
     {
-        for (int i = 3; i >= 1; --i)
-        {
-            g.setColour (c.withAlpha (0.09f * (float) i));
-            g.strokePath (p, juce::PathStrokeType (base + (float) i * 2.0f));
-        }
         g.setColour (c);
-        g.strokePath (p, juce::PathStrokeType (base));
+        g.strokePath (p, juce::PathStrokeType (base, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
     }
 
     // ---------------------------------------------------------------- Waveform

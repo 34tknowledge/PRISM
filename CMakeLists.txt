@@ -40,6 +40,15 @@ juce_add_plugin(Prism
     COPY_PLUGIN_AFTER_BUILD   FALSE   # avoid needing admin for C:\Program Files\Common Files\VST3
     VST3_CATEGORIES           "Instrument" "Synth")
 
+# ---------------------------------------------------------------------------
+# Embedded resources (logo)
+# ---------------------------------------------------------------------------
+juce_add_binary_data(PrismData
+    HEADER_NAME BinaryData.h
+    NAMESPACE   BinaryData
+    SOURCES     Resources/sf_logo.png)
+set_target_properties(PrismData PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
+
 target_sources(Prism PRIVATE
     Source/PluginProcessor.cpp
     Source/PluginEditor.cpp
@@ -61,6 +70,7 @@ target_compile_definitions(Prism PUBLIC
 
 target_link_libraries(Prism
     PRIVATE
+        PrismData
         juce::juce_audio_utils
         juce::juce_audio_processors
         juce::juce_dsp

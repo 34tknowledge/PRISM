@@ -173,9 +173,6 @@ namespace prism
         layout.add (floatp (reverbWidth, "Reverb Width", lin (0.0f, 1.0f), 1.0f));
         layout.add (floatp (reverbMix, "Reverb Mix", lin (0.0f, 1.0f), 0.25f));
 
-        // ---- Supernova ----
-        layout.add (boolp (supernova, "Supernova", false));
-
         return layout;
     }
 }

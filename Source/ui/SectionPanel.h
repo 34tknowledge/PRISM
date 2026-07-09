@@ -30,14 +30,17 @@ namespace prism
             g.setColour (theme::stroke);
             g.drawRoundedRectangle (b.reduced (0.5f), 8.0f, 1.0f);
 
-            auto tb = getLocalBounds().removeFromTop (titleH);
+            // small accent tick + neutral title
             g.setColour (accent);
-            g.setFont (juce::Font (juce::FontOptions().withHeight (13.0f).withStyle ("Bold")));
-            g.drawText (title.toUpperCase(), tb.reduced (12, 0), juce::Justification::centredLeft);
+            g.fillRect (juce::Rectangle<float> (12.0f, 9.0f, 3.0f, (float) titleH - 15.0f));
+            g.setColour (theme::text);
+            g.setFont (juce::Font (juce::FontOptions().withHeight (12.5f).withStyle ("Bold")));
+            g.drawText (title.toUpperCase(), getLocalBounds().removeFromTop (titleH).withTrimmedLeft (22),
+                        juce::Justification::centredLeft);
 
-            // accent divider under the title
-            g.setColour (accent.withAlpha (0.35f));
-            g.fillRect (juce::Rectangle<float> (10.0f, (float) titleH - 2.0f, (float) getWidth() - 20.0f, 1.0f));
+            // subtle divider under the title
+            g.setColour (theme::stroke);
+            g.fillRect (juce::Rectangle<float> (12.0f, (float) titleH - 2.0f, (float) getWidth() - 24.0f, 1.0f));
         }
 
         void resized() override

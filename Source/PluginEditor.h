@@ -5,7 +5,6 @@
 #include "ui/GlowKnob.h"
 #include "ui/SectionPanel.h"
 #include "ui/Displays.h"
-#include "ui/SupernovaButton.h"
 #include <memory>
 
 class PrismAudioProcessorEditor : public juce::AudioProcessorEditor,
@@ -49,8 +48,8 @@ private:
     prism::EnvelopeDisplay    ampEnvDisp  { prism::theme::ampEnv };
     prism::EnvelopeDisplay    filtEnvDisp { prism::theme::filtEnv };
 
-    // hero + transport
-    prism::SupernovaButton nova;
+    // transport
+    juce::Image logoImage;
     juce::TextButton presetPrev, presetNext, presetName;
 
     // top-bar controls

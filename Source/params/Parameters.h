@@ -121,9 +121,6 @@ namespace prism::id
     constexpr auto reverbDamp    = "reverbDamp";
     constexpr auto reverbWidth   = "reverbWidth";
     constexpr auto reverbMix     = "reverbMix";
-
-    // ---- SUPERNOVA (the glowing button) ----------------------------------
-    constexpr auto supernova     = "supernova";    // momentary macro trigger
 }
 
 namespace prism

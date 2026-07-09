@@ -31,9 +31,7 @@ namespace prism
         void setBendRange (float semitones) { bendRange = semitones; }
 
         void setLfoParams (int idx, int wave, float rateHz, int dest, float amount);
-        void setSupernova (bool on) { novaOn = on; }
 
-        float getSupernovaValue() const noexcept { return nova; }
         float getDisplayFilterEnv() const noexcept { return voices[lastVoiceIndex].getFilterEnvValue(); }
 
         /** Replace `buffer` with the summed voice output; handle MIDI inline. */
@@ -70,9 +68,5 @@ namespace prism
 
         // pitch bend
         float bendRange = 2.0f, bendSemis = 0.0f;
-
-        // supernova envelope
-        bool  novaOn = false;
-        float nova = 0.0f, novaAttCoeff = 0.001f, novaRelCoeff = 0.0001f;
     };
 }
